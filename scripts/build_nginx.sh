@@ -19,6 +19,8 @@ headers_more_nginx_module_url=https://github.com/agentzh/headers-more-nginx-modu
 
 build_dir=$1
 
+echo "Building nginx ${NGINX_VERSION}"
+
 cd ${build_dir}
 echo "Build dir: $build_dir"
 
