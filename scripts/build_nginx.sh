@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -e
 # Build NGINX and modules on Heroku.
 # This program is designed to run in a web dyno provided by Heroku.
 # We would like to build an NGINX binary for the builpack on the
@@ -39,6 +39,7 @@ echo "Downloading $headers_more_nginx_module_url"
 	cd nginx-${NGINX_VERSION}
 	./configure \
 		--with-pcre=pcre-${PCRE_VERSION} \
+    --with-http_ssl_module \
 		--prefix=/tmp/nginx \
 		--add-module=/${temp_dir}/nginx-${NGINX_VERSION}/headers-more-nginx-module-${HEADERS_MORE_VERSION}
 	make install
