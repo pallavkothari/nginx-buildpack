@@ -2,12 +2,22 @@
 
 set -e
 
+# Build nginx
 mkdir -p "$1/bin/"
-cp "bin/nginx-$STACK" "$1/bin/nginx"
-nginx_version=$(./bin/nginx-$STACK -V 2>&1 | head -1 | awk '{ print $NF }')
+mkdir -p "$1/build/target"
+
+( cd "$1/build" &&
+  $1/scripts/build_nginx.sh "$1/build" &&
+	cp "$1/build/target/bin/nginx" "$1/bin/nginx" &&
+	rm -r "$1/build" )
+
 echo "-----> nginx-buildpack: Installed ${nginx_version} to app/bin"
-cp bin/start-nginx "$1/bin/"
-echo '-----> nginx-buildpack: Added start-nginx to app/bin'
+if [[ ! -f $1/bin/start-nginx ]]; then
+	cp bin/start-nginx "$1/bin/"
+	echo '-----> nginx-buildpack: Default start-nginx copied to app/bin/start-nginx.'
+else
+  echo '-----> nginx-buildpack: Custom start-nginx found in app/bin'
+fi
 
 mkdir -p "$1/config"
 

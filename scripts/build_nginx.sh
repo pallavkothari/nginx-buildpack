@@ -17,14 +17,10 @@ nginx_tarball_url=http://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz
 pcre_tarball_url=http://garr.dl.sourceforge.net/project/pcre/pcre/${PCRE_VERSION}/pcre-${PCRE_VERSION}.tar.bz2
 headers_more_nginx_module_url=https://github.com/agentzh/headers-more-nginx-module/archive/v${HEADERS_MORE_VERSION}.tar.gz
 
-temp_dir=$(mktemp -d /tmp/nginx.XXXXXXXXXX)
+build_dir=$1
 
-echo "Serving files from /tmp on $PORT"
-cd /tmp
-python -m SimpleHTTPServer $PORT &
-
-cd $temp_dir
-echo "Temp dir: $temp_dir"
+cd ${build_dir}
+echo "Build dir: $build_dir"
 
 echo "Downloading $nginx_tarball_url"
 curl -L $nginx_tarball_url | tar xzv
@@ -36,17 +32,12 @@ echo "Downloading $headers_more_nginx_module_url"
 (cd nginx-${NGINX_VERSION} && curl -L $headers_more_nginx_module_url | tar xvz )
 
 (
-	cd nginx-${NGINX_VERSION}
+	cd nginx-${NGINX_VERSION} &&
+	mkdir -p ${build_dir}/target &&
 	./configure \
 		--with-pcre=pcre-${PCRE_VERSION} \
     --with-http_ssl_module \
-		--prefix=/tmp/nginx \
-		--add-module=/${temp_dir}/nginx-${NGINX_VERSION}/headers-more-nginx-module-${HEADERS_MORE_VERSION}
+		--prefix=${build_dir}/target \
+		--add-module=nginx-${NGINX_VERSION}/headers-more-nginx-module-${HEADERS_MORE_VERSION}
 	make install
 )
-
-while true
-do
-	sleep 1
-	echo "."
-done
