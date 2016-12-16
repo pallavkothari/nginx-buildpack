@@ -10,7 +10,7 @@ build_pack_dir=$PWD
 
 ( cd "$1/build" &&
   ${build_pack_dir}/scripts/build_nginx.sh "$1/build" &&
-	cp "$1/build/target/bin/nginx" "$1/bin/nginx" &&
+	cp "$1/build/target/sbin/nginx" "$1/bin/nginx" &&
 	rm -r "$1/build" )
 
 echo "-----> nginx-buildpack: Installed ${nginx_version} to app/bin"
