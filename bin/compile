@@ -6,8 +6,10 @@ set -e
 mkdir -p "$1/bin/"
 mkdir -p "$1/build/target"
 
+build_pack_dir=$PWD
+
 ( cd "$1/build" &&
-  /scripts/build_nginx.sh "$1/build" &&
+  ${build_pack_dir}/scripts/build_nginx.sh "$1/build" &&
 	cp "$1/build/target/bin/nginx" "$1/bin/nginx" &&
 	rm -r "$1/build" )
 
