@@ -7,7 +7,7 @@ mkdir -p "$1/bin/"
 mkdir -p "$1/build/target"
 
 ( cd "$1/build" &&
-  $1/scripts/build_nginx.sh "$1/build" &&
+  scripts/build_nginx.sh "$1/build" &&
 	cp "$1/build/target/bin/nginx" "$1/bin/nginx" &&
 	rm -r "$1/build" )
 
