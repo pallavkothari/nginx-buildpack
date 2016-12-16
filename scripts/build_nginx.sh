@@ -40,6 +40,6 @@ echo "Downloading $headers_more_nginx_module_url"
 		--with-pcre=pcre-${PCRE_VERSION} \
     --with-http_ssl_module \
 		--prefix=${build_dir}/target \
-		--add-module=nginx-${NGINX_VERSION}/headers-more-nginx-module-${HEADERS_MORE_VERSION}
+		--add-module=/${build_dir}/nginx-${NGINX_VERSION}/headers-more-nginx-module-${HEADERS_MORE_VERSION}
 	make install
 )
